@@ -29,7 +29,7 @@ const Pagination: React.FC<PaginationProps> = ({
 
   return (
     <section
-      className={`  flex  sm:flex-row justify-between items-center mt-5 w-fit mx-auto text-white`}
+      className={`  flex  flex-col gap-5 md:flex-row justify-between items-center mt-5 w-fit mx-auto text-white flex-wrap`}
     >
       <button
         onClick={() => handlePageChange(currentPage - 1)}

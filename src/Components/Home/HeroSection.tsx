@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 const HeroSection = () => {
   return (
     <section className="flex flex-col justify-center min-h-[90vh] max-h-[100vh] items-center text-center px-4 bg-gradient-to-b from-[#243631ca] to-transparent">
@@ -12,14 +14,14 @@ const HeroSection = () => {
 
       {/* Buttons */}
       <div className="flex gap-6">
-        <button className="bg-[#2c4441d8] text-white px-6 py-2 rounded-lg shadow-md hover:bg-slate-300 hover:text-black cursor-pointer transition text-lg font-medium">
+        <NavLink
+          to={"/shop"}
+          className="bg-[#2c4441d8] text-white px-6 py-2 rounded-lg shadow-md hover:bg-slate-300 hover:text-black cursor-pointer transition text-lg font-medium shopNow "
+        >
           Shop now
-        </button>
-        <button className="bg-[#2c4441d8] text-white px-6 py-2 rounded-lg shadow-md hover:bg-slate-300  hover:text-black cursor-pointer transition text-lg font-medium">
-          Explore
-        </button>
+        </NavLink>
       </div>
-    </section>
+    </section> 
   );
 };
 

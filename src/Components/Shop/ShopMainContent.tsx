@@ -8,6 +8,7 @@ import Pagination from "./Pagination";
 const ShopMainContent = () => {
   let {
     searchQuery,
+    setSearchQuery,
     selectedCategory,
     minPrice,
     maxPrice,
@@ -50,7 +51,7 @@ const ShopMainContent = () => {
 
   const filteredProducts = useMemo(() => {
     let result = [...products];
-    keyword && result;
+    console.log("result : ", result);
 
     if (selectedCategory) {
       console.log(selectedCategory);
@@ -60,14 +61,11 @@ const ShopMainContent = () => {
     }
     if (minPrice !== undefined) {
       result = result.filter((p) => p.price >= minPrice);
-      setKeyword("");
     }
     if (maxPrice !== undefined) {
       result = result.filter((p) => p.price <= maxPrice);
-      setKeyword("");
     }
     if (searchQuery) {
-      setKeyword("");
       result = result.filter((p) =>
         p.title.toLowerCase().includes(searchQuery.toLowerCase())
       );
@@ -98,45 +96,65 @@ const ShopMainContent = () => {
     }
   };
 
-  return (
-    <section className="xl:w-[80vw] lg:w-[75vw] sm:w-[20rem] pt-[15vh] ">
-      <section className="flex flex-col  gap-5 pr-2 pb-5 min-h-[85vh] max-h-[80vh] overflow-y-scroll  custom-scroll">
-        <section className="relative ">
-          <button
-            className="border px-4 py-2 rounded-full flex items-center text-white  cursor-pointer"
-            onClick={() => setDropdownOpen(!dropdownOpen)}
-          >
-            <IconFilter className="mr-2  " />
-            {filter === "all"
-              ? "filter"
-              : filter.charAt(0).toLowerCase() + filter.slice(1)}
-          </button>
+  useEffect(() => {
+    document
+      .querySelector("#mainContainer")
+      ?.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentPage]);
 
-          {dropdownOpen && (
-            <section
-              className="absolute bg-[#2c4441d8] z-20 backdrop-blur-xl text-white  rounded mt-2 w-full sm:w-40 p-2 border border-white/50 space-y-3 "
+  return (
+    <section className="lg:w-[80vw]  w-[100vw] pt-[15vh] ">
+      <section
+        className="flex flex-col  gap-5     pb-5  pt-2 min-h-[85vh] max-h-[80vh] overflow-y-scroll  custom-scroll"
+        id="mainContainer"
+      >
+        <article className="w-full flex justify-center md:px-20 px-2 gap-2 md:gap-5">
+          <form className="w-[80%]  ">
+            <input
+              type="text"
+              className="border-2 w-[100%] text-white outline-0 border-[#2c4441d8]  px-2 md:pl-5  py-2 rounded-full  "
+              placeholder="Search Your Product in this Page  Products  "
+              value={searchQuery ?? ""}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </form>
+
+          <section className="relative ">
+            <button
+              className="border px-4 py-2 rounded-full flex items-center text-white  cursor-pointer"
               onClick={() => setDropdownOpen(!dropdownOpen)}
             >
-              {["cheap", "expensive", "popular"].map((val) => (
-                <button
-                  onClick={() => setFilter(val)}
-                  className={`block px-4 py-2 w-full text-left hover:bg-white hover:text-black rounded-2xl cursor-pointer ${
-                    filter == val ? " bg-white text-black " : "bg-transparent"
-                  }  `}
-                >
-                  {val}
-                </button>
-              ))}
-            </section>
-          )}
-        </section>
+              <IconFilter className="mr-2  " />
+              {filter === "all"
+                ? "filter"
+                : filter.charAt(0).toLowerCase() + filter.slice(1)}
+            </button>
 
-        <section className="grid w-full grid-cols-2 lg:grid-cols-4  gap-10 ">
+            {dropdownOpen && (
+              <section
+                className="absolute bg-[#2c4441d8] z-20 backdrop-blur-xl text-white  rounded mt-2 w-full sm:w-40 p-2 /50 space-y-3 "
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+              >
+                {["cheap", "expensive", "popular"].map((val) => (
+                  <button
+                    onClick={() => setFilter(val)}
+                    className={`block px-4 py-2 w-full text-left hover:bg-white hover:text-black rounded-2xl cursor-pointer ${
+                      filter == val ? " bg-white text-black " : "bg-transparent"
+                    }  `}
+                  >
+                    {val}
+                  </button>
+                ))}
+              </section>
+            )}
+          </section>
+        </article>
+
+        <section className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3  xl:grid-cols-4 px-4 lg:px-0 lg:pr-2  gap-10 ">
           {/* product cards */}
 
-          {filteredProducts.length > 0 ? (
-            filteredProducts.map((p) => <Product key={p.id} pro={p} />)
-          ) : (
+          {(searchQuery || selectedCategory || keyword) &&
+          filteredProducts.length < 0 ? (
             <section className="w-[75vw] h-[50vh] flex flex-col gap-2 justify-center items-center text-white text-4xl font-serif">
               <h2>Data Not Found.. </h2>
               <p>Change the Filters and try again </p>
@@ -147,19 +165,16 @@ const ShopMainContent = () => {
                 Reset Filters
               </button>
             </section>
+          ) : (
+            filteredProducts.map((p) => <Product key={p.id} pro={p} />)
           )}
-          {/* {selectedCategory
-            ? filteredProducts
-                .slice(currentPage - 1, currentPage + 7)
-                .map((p) => <Product key={p.id} pro={p} />)
-            : filteredProducts.map((p) => <Product key={p.id} pro={p} />)} */}
         </section>
         {!selectedCategory &&
           !keyword &&
           !maxPrice &&
           !minPrice &&
           !searchQuery &&
-          filteredProducts.length < 0 && (
+          filteredProducts.length > 0 && (
             <Pagination
               handlePageChange={handlePageChange}
               currentPage={currentPage}

@@ -2,11 +2,16 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useFilter } from "../../contexts/FilterContext";
 
-const ShopSidebar = () => {
-  let {
-    searchQuery,
-    setSearchQuery,
+interface ShopSidebarProps {
+  trueCondition?: string;
+  falseCondition?: string;
+}
 
+const ShopSidebar: React.FC<ShopSidebarProps> = ({
+  trueCondition = "",
+  falseCondition = "",
+}) => {
+  let {
     selectedCategory,
     setSelectedCategory,
 
@@ -20,6 +25,8 @@ const ShopSidebar = () => {
     setKeyword,
 
     handleResetFilter,
+    isSideBarOpen,
+    setIsSideBarOpen,
   } = useFilter();
 
   const [categories, setCategories] = useState<string[]>([]);
@@ -38,7 +45,6 @@ const ShopSidebar = () => {
         const res = await axios.get(
           "https://dummyjson.com/products/category-list"
         );
-        console.log(res.data);
         setCategories(res.data);
       } catch (error) {
         console.error("Error fetching product", error);
@@ -57,38 +63,41 @@ const ShopSidebar = () => {
     setMaxPrice(value ? parseFloat(value) : undefined);
   };
 
-  const handleRadioChangeCategories = (category: string) => {
+  const handleChangeInCategories = (category: string) => {
     setSelectedCategory(category);
+    console.log(category);
+    handleSideBarNavLinksClick();
   };
 
   const handleKeywordClick = (keyWord: string) => {
     setKeyword(keyWord);
     setSelectedCategory("");
+    handleSideBarNavLinksClick();
   };
 
+  const handleSideBarNavLinksClick = () => {
+    window.innerWidth < 1024 && setIsSideBarOpen(!isSideBarOpen);
+  };
   return (
-    <section className="max-w-[20vw]  p-5 h-screen text-white pt-[15vh]">
+    <section
+      className={`lg:max-w-[25vw] xl:max-w-[20vw] md:max-w-[40vw]  max-w-[80vh] lg:relative  absolute  z-30 bg-black lg:bg-inherit p-5 h-screen text-white pt-[15vh] transition-all duration-500 ${
+        isSideBarOpen ? trueCondition : falseCondition
+      }
+`}
+    >
       <section className="min-h-[80vh] max-h-[80vh] flex flex-col gap-2 py-6 overflow-y-scroll custom-scroll">
-        <input
-          type="text"
-          className="border-2 w-[90%] outline-0 border-[#2c4441d8] rounded px-2 py-1 sm:mb-0 "
-          placeholder="Search Product in this page"
-          value={searchQuery ?? ""}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-
-        <section className="flex gap-2 my-2 w-[90%]">
+        <section className="flex flex-col gap-3 justify-center my-2 w-[90%]">
           <input
             type="tel"
-            className="border border-[#2c4441d8] rounded outline-0 px-5 py-3  w-full"
-            placeholder="min"
+            className="border w-[80%] border-[#2c4441d8] rounded outline-0 px-5 py-3  "
+            placeholder="min Price"
             value={minPrice ?? ""}
             onChange={handleMinPriceChange}
           />
           <input
             type="tel"
-            className="border border-[#2c4441d8] outline-0 rounded px-5 py-3 w-full"
-            placeholder="max"
+            className="border w-[80%]  border-[#2c4441d8] outline-0 rounded px-5 py-3 "
+            placeholder="max Price"
             value={maxPrice ?? ""}
             onChange={handleMaxPriceChange}
           />
@@ -100,11 +109,12 @@ const ShopSidebar = () => {
           {keywords.map((word, index) => (
             <button
               key={index}
-              className={`block mb-2 ml-4 px-4 w-1/2 text-left text-black border border-white/20 bg-[#2c4441d8] rounded hover:bg-white hover:text-black cursor-pointer ${
-                word === keyword
-                  ? " bg-white text-[#2c4441d8] "
-                  : "bg-[#2c4441d8] text-white"
-              } `}
+              className={`block mb-2 ml-4 px-4 w-1/2 text-left border border-white/20 rounded cursor-pointer
+                ${
+                  word === keyword
+                    ? "bg-white text-black"
+                    : "bg-[#2c4441d8] text-white hover:bg-white hover:text-black"
+                }`}
               onClick={() => handleKeywordClick(word)}
             >
               {word.toUpperCase()}
@@ -118,14 +128,15 @@ const ShopSidebar = () => {
           {categories.map((category, index) => (
             <label
               key={index}
-              className="block mb-2 font-semibold ml-4  cursor-pointer"
+              className={`block mb-2 font-semibold ml-4  cursor-pointer
+                ${selectedCategory === category ? "border py-1 px-2 pr-4 rounded-md w-fit  " : ""}`}
             >
               <input
-                type="radio"
+                type="checkbox"
                 name="category"
-                value={category ?? ""}
-                className="mr-2  w-[16px] h-[16px]"
-                onChange={() => handleRadioChangeCategories(category)}
+                value={category}
+                className="mr-2  w-[16px] h-[16px] "
+                onChange={(e) => handleChangeInCategories(e.target.value)}
                 checked={selectedCategory === category}
               />
               {category.toUpperCase()}

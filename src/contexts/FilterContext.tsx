@@ -23,6 +23,9 @@ interface FilterContextType {
   setKeyword: (keyword: string) => void;
 
   handleResetFilter: () => void;
+
+  isSideBarOpen: boolean;
+  setIsSideBarOpen: (val: boolean) => void;
 }
 
 // Create context with undefined as default
@@ -37,6 +40,7 @@ export const FilterProvider: React.FC<{ children: ReactNode }> = ({
   const [minPrice, setMinPrice] = useState<number | undefined>(undefined);
   const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined);
   const [keyword, setKeyword] = useState<string>("");
+  const [isSideBarOpen, setIsSideBarOpen] = useState<boolean>(false);
 
   const handleResetFilter = () => {
     setSearchQuery("");
@@ -60,6 +64,8 @@ export const FilterProvider: React.FC<{ children: ReactNode }> = ({
         keyword,
         setKeyword,
         handleResetFilter,
+        isSideBarOpen,
+        setIsSideBarOpen,
       }}
     >
       {children}

@@ -1,8 +1,10 @@
 import Categories from "../Components/Home/Categories";
-import { Testimonials } from "../Components/Home/Testimonials";
 import HeroSection from "../Components/Home/HeroSection";
-import Features from "../Components/Home/Features";
-import Footer from "../Components/Home/Footer";
+import { lazy } from "react";
+
+const Features = lazy(() => import("../Components/Home/Features"));
+const Footer = lazy(() => import("../Components/Home/Footer"));
+const Testimonials = lazy(() => import("../Components/Home/Testimonials"));
 
 const Home = () => {
   return (

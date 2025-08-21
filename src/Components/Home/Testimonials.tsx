@@ -1,14 +1,13 @@
 "use client";
 
 import { InfiniteMovingCards } from "../../lib/ui/Infinite-moving-cards";
-
-export function Testimonials() {
+function Testimonials() {
   return (
     <>
       <h2 className="text-center text-white text-6xl font-serif">
         Testimonials
       </h2>
-      <div className="h-fit  rounded-md flex flex-col antialiased bg-white dark:bg-black dark:bg-grid-white/[0.05] items-center justify-end relative overflow-hidden">
+      <div className="h-fit  rounded-md flex flex-col antialiased bg-black items-center justify-end relative overflow-hidden">
         <InfiniteMovingCards
           items={testimonials}
           direction="right"
@@ -18,6 +17,8 @@ export function Testimonials() {
     </>
   );
 }
+
+export default Testimonials;
 
 const testimonials = [
   {

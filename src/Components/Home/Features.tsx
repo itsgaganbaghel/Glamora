@@ -9,7 +9,7 @@ export default function Features() {
   ];
 
   return (
-    <section className="pb-16 bg-black">
+    <section className="pb-16 bg-black" id="Features">
       <div className="max-w-6xl mx-auto px-6 text-center">
         {/* Section Heading */}
         <h2 className="text-3xl md:text-4xl font-bold mb-12 text-white">
@@ -22,7 +22,8 @@ export default function Features() {
           {featuresData.map((feature, idx) => (
             <div
               key={idx}
-              className="flex flex-col items-center justify-center bg-[#171717] border-x-1 border-white/10 hover:border-white cursor-pointer rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300"
+              className="flex flex-col items-center justify-center bg-[#171717] border-x-1 border-white/10 hover:border-white/30 cursor-pointer rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:bg-[radial-gradient(circle,#323232f1,transparent)]
+"
             >
               <img
                 src={feature.img}

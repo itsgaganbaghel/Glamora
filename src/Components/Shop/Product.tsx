@@ -24,7 +24,7 @@ const Product: React.FC<BookCardProps> = ({ pro }) => {
       <img
         src={thumbnail}
         alt={title}
-        className="w-full h-44 object-contain drop-shadow-gray-50/30 mb-3 drop-shadow-2xl"
+        className="w-full h-44 object-center p-2 drop-shadow-gray-50/30 mb-3 drop-shadow-2xl"
       />
       <h2 className="font-semibold text-sm">{title}</h2>
       <p className="font-semibold  ">{`$ ${price}`}</p>
