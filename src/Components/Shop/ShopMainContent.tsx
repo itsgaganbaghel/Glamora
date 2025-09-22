@@ -105,11 +105,11 @@ const ShopMainContent = () => {
   return (
     <section className="lg:w-[80vw]  w-[100vw] pt-[15vh] ">
       <section
-        className="flex flex-col  gap-5     pb-5  pt-2 min-h-[85vh] max-h-[80vh] overflow-y-scroll  custom-scroll"
+        className="flex flex-col  gap-5 w-full  pb-5  pt-2 min-h-[85vh] max-h-[80vh] overflow-y-scroll  custom-scroll"
         id="mainContainer"
       >
-        <article className="w-full flex justify-center md:px-20 px-2 gap-2 md:gap-5">
-          <form className="w-[80%]  ">
+        <article className="w-full flex justify-center md:px-20 lg:pl-5 px-2 gap-2 md:gap-5">
+          <form className="w-full ">
             <input
               type="text"
               className="border-2 w-[100%] text-white outline-0 border-[#2c4441d8]  px-2 md:pl-5  py-2 rounded-full  "
@@ -169,6 +169,7 @@ const ShopMainContent = () => {
             filteredProducts.map((p) => <Product key={p.id} pro={p} />)
           )}
         </section>
+
         {!selectedCategory &&
           !keyword &&
           !maxPrice &&
